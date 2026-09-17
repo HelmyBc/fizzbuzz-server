@@ -20,7 +20,7 @@ const MaxLimit = 1000000
 // 100 is large enough for any realistic use case.
 const MaxStrLen = 100
 
-// Request struct holds the validated parameters for the fizzbuzz request.
+// Request holds the validated parameters for the fizzbuzz request.
 type Request struct {
 	Int1  int
 	Int2  int
@@ -32,13 +32,13 @@ type Request struct {
 // validation error messages, to be called by the Validate() function
 // distinguish "bad input" from unexpected failures.
 var (
-	ErrInt1MustBePositive = errors.New("Int1 must be a positive integer")
-	ErrInt2MustBePositive = errors.New("Int2 must be a positive integer")
-	ErrLimitRange         = errors.New("Limit must be between 1 and " + strconv.Itoa(MaxLimit))
-	ErrStr1Empty          = errors.New("Str1 must not be empty")
-	ErrStr2Empty          = errors.New("Str2 must not be empty")
-	ErrStr1TooLong        = errors.New("Str1 must be no longer than " + strconv.Itoa(MaxStrLen) + " characters")
-	ErrStr2TooLong        = errors.New("Str2 must be no longer than " + strconv.Itoa(MaxStrLen) + " characters")
+	ErrInt1MustBePositive = errors.New("int1 must be a positive integer")
+	ErrInt2MustBePositive = errors.New("int2 must be a positive integer")
+	ErrLimitRange         = errors.New("limit must be between 1 and " + strconv.Itoa(MaxLimit))
+	ErrStr1Empty          = errors.New("str1 must not be empty")
+	ErrStr2Empty          = errors.New("str2 must not be empty")
+	ErrStr1TooLong        = errors.New("str1 must be no longer than " + strconv.Itoa(MaxStrLen) + " characters")
+	ErrStr2TooLong        = errors.New("str2 must be no longer than " + strconv.Itoa(MaxStrLen) + " characters")
 )
 
 // Validate checks if the request parameters are valid.

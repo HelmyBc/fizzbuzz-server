@@ -9,6 +9,7 @@ import (
 	"github.com/HelmyBc/fizzbuzz-server/internal/stats"
 )
 
+// statisticsResponse is the JSON representation of the most-used FizzBuzz parameters.
 type statisticsResponse struct {
 	Int1  int    `json:"int1"`
 	Int2  int    `json:"int2"`
@@ -18,6 +19,7 @@ type statisticsResponse struct {
 	Hits  int64  `json:"hits"`
 }
 
+// StatisticsHandler returns statistics for the most-used FizzBuzz parameters.
 type StatisticsHandler struct {
 	Stats *stats.Store
 }

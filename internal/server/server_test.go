@@ -210,3 +210,24 @@ func TestJSONErrorShapes(t *testing.T) {
 		})
 	}
 }
+
+// TestWithRecovery_CatchesPanic verifies that the recovery middleware converts
+// a panicking handler into a 500 response without crashing the test process.
+// The body is empty by design, withRecovery only calls WriteHeader(500).
+func TestWithRecovery_CatchesPanic(t *testing.T) {
+	panicking := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		panic("boom")
+	})
+	handler := withRecovery(panicking)
+
+	rec := httptest.NewRecorder()
+	req := httptest.NewRequest(http.MethodGet, "/whatever", nil)
+
+	// ServeHTTP must return normally — if withRecovery doesn't catch the panic
+	// the test binary itself crashes here, making the test self-evidently useful.
+	handler.ServeHTTP(rec, req)
+
+	if rec.Code != http.StatusInternalServerError {
+		t.Fatalf("status = %d, want %d", rec.Code, http.StatusInternalServerError)
+	}
+}

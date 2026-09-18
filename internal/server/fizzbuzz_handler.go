@@ -23,11 +23,6 @@ type FizzBuzzHandler struct {
 
 func (h *FizzBuzzHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
-	if r.Method != http.MethodGet {
-		writeError(w, http.StatusMethodNotAllowed, "method not allowed")
-		return
-	}
-
 	req, err := parseRequest(r)
 	if err != nil {
 		writeError(w, http.StatusBadRequest, err.Error())

@@ -54,6 +54,34 @@ func TestGenerate_BothDivisorsEqual(t *testing.T) {
 	}
 }
 
+// TestGenerate_LimitOne asserts the boundary where limit=1 and the single
+// element (1) is not a multiple of either divisor.
+func TestGenerate_LimitOne(t *testing.T) {
+	req := Request{Int1: 3, Int2: 5, Limit: 1, Str1: "fizz", Str2: "buzz"}
+	got := Generate(req)
+	want := []string{"1"}
+	if len(got) != 1 || got[0] != want[0] {
+		t.Fatalf("Generate() = %v, want %v", got, want)
+	}
+}
+
+// TestGenerate_Int1IsOne confirms that when int1=1 every number becomes str1
+// (or str1+str2 for multiples of int2).
+func TestGenerate_Int1IsOne(t *testing.T) {
+	req := Request{Int1: 1, Int2: 4, Limit: 8, Str1: "fizz", Str2: "buzz"}
+	got := Generate(req)
+	// Every number is a multiple of 1 -> str1; multiples of 4 also get str2.
+	want := []string{"fizz", "fizz", "fizz", "fizzbuzz", "fizz", "fizz", "fizz", "fizzbuzz"}
+	if len(got) != len(want) {
+		t.Fatalf("Generate() len=%d, want %d", len(got), len(want))
+	}
+	for i := range want {
+		if got[i] != want[i] {
+			t.Errorf("Generate()[%d] = %q, want %q", i, got[i], want[i])
+		}
+	}
+}
+
 // Table-driven tests for Validate function.
 func TestValidate(t *testing.T) {
 	longStr := strings.Repeat("a", MaxStrLen+1)
@@ -67,6 +95,7 @@ func TestValidate(t *testing.T) {
 		{"int1 zero", Request{0, 5, 15, "fizz", "buzz"}, ErrInt1MustBePositive},
 		{"int1 negative", Request{-1, 5, 15, "fizz", "buzz"}, ErrInt1MustBePositive},
 		{"int2 zero", Request{3, 0, 15, "fizz", "buzz"}, ErrInt2MustBePositive},
+		{"int2 negative", Request{3, -1, 15, "fizz", "buzz"}, ErrInt2MustBePositive},
 		{"limit zero", Request{3, 5, 0, "fizz", "buzz"}, ErrLimitRange},
 		{"limit negative", Request{3, 5, -5, "fizz", "buzz"}, ErrLimitRange},
 		{"limit too large", Request{3, 5, MaxLimit + 1, "fizz", "buzz"}, ErrLimitRange},

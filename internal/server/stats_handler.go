@@ -35,7 +35,7 @@ func (h StatisticsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	params, err := url.ParseQuery(entry.Key)
 	if err != nil {
 		slog.Error("failed to parse stats key", "key", entry.Key, "error", err)
-		writeError(w, http.StatusInternalServerError, "internal server error : failed to parse statistics")
+		writeError(w, http.StatusInternalServerError, "internal server error: failed to parse statistics")
 		return
 	}
 
